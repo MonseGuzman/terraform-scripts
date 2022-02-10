@@ -70,9 +70,16 @@ function check_tfe_resources(){
           --header "Content-Type: application/vnd.api+json" \
           https://$TFE_HOST/api/v2/workspaces/$WORKSPACE_ID/resources | jq -r ".data")
   
-  echo $resources
-
-  if [ "$resources" == "[]" ]; then
+  # In the case that the code is not working, you can uncomment the code below:
+  # resources=$(curl \
+  #     --silent \
+  #     --header "Authorization: Bearer $TFE_TOKEN" \
+  #     --header "Content-Type: application/vnd.api+json" \
+  #     --request GET \
+  #     https://$TFE_HOST/api/v2/workspaces/$WORKSPACE_ID/current-state-version | jq -r ".data.attributes.providers" )
+  
+  if [ "$resources" == "[]" ]; then 
+  # if [ "$resources" == "{}" ]; then
     echo "##[debug]Workspace $TFE_WORKSPACE has no resources to destroy."
     return 0
   else
